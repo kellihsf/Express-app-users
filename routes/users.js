@@ -1,16 +1,26 @@
 const express = require('express')
 const router = express.Router()
 
+router.use(logger)
+
 router.get('/', (req, res) => {
+    req.query.name
     res.send("User List")
 })
 
 router.get('/new', (req, res) => {
-    res.send("New User Form")
+    res.render('users/new')
 })
 
 router.post('/', (req, res) => {
-    res.send('Create User')
+    const isValid = true
+   if(isValid) {
+       users.push({ firstName: req.body.firstName})
+       res.redirect(`/users/${users.length - 1}`)
+   } else {
+       console.log("Error")
+       res.render('users/new', { firstName: req.body.firstName})
+   }
 })
 
 // :id is a dynamic parameter 
@@ -36,6 +46,9 @@ router.param("id", (req, res, next, id) => {
     next()
 })
 
-
+function logger(req, res, next) {
+    console.log(req.originalUrl)
+    next()
+}
 
 module.exports = router
